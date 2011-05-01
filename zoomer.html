@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title>Zoomer Demo</title>
+	
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js"></script>
+<script type="text/javascript" src="jquery.easing.js"></script>
+<script>
+$(document).ready(function(){
+
+	var initlist = $('ul.zoomer-list'),
+	    target = $('#zoomerTarget');
+
+	function zoomerImg(src, caption) {
+		return $('<div class="zoomer-img"><div>'+caption+'</div><img src="'+src+'"></div>').click(function (ev) {
+			ev.preventDefault();
+			ev.stopPropagation();
+			
+			var nextList = $(this).data('list');
+			if (nextList.length < 1) {
+				return;
+			}
+
+			var nextZoomer = createZoomer(nextList);
+			var img = $(this).find('img:first');
+			var clone = img
+			.clone()
+			.remove()
+			.css({
+				"z-index": 100,
+				position:  'absolute',
+				top:       img.offset().top,
+				left:      img.offset().left
+			}).appendTo(target)
+			.animate({
+				opacity: 0,
+				top:     0,
+				left:    0,
+				width:   $(document).width(),
+				height:  $(document).height()
+			}, {
+				duration: 500,
+				specialEasing: {
+					opacity: 'easeInQuint'
+				},
+				complete: function () {
+					$(this).remove();
+				}
+			});
+		
+			addZoomer(nextZoomer);
+		});
+	}
+
+	function createZoomer(list) {
+		var container = $('<div class="zoomer-container"></div>').hide();
+
+		$(list).find('> li').each(function (idx, li) {
+			var a = $(li).find('> a:first');
+			var zoomer = zoomerImg(a.attr('href'), a.text());
+			zoomer.data('list', $(li).find('> ul:first'));
+			container.append(zoomer);
+		});
+		return container;
+	}
+
+	function addZoomer(zoomerContainer, showFunc) {
+		target.find('.zoomer-container').hide();
+		target.append(zoomerContainer);
+
+		zoomerContainer.fadeIn(500, 'easeInQuint', function () {
+			zoomerContainer.find('div.zoomer-img').each(function (idx, zoomer) {
+				zoomer = $(zoomer);
+				if (zoomer.data('list').length<1) {
+					return;
+				}
+				var img = zoomer.find('img:first');
+				var offset = img.offset();
+				$('<div class="zoomer-overlay">+</div>').css({
+					position: 'absolute',
+					top:      offset.top,
+					left:     offset.left,
+					width:    img.width(),
+					height:   img.height(),
+				}).insertAfter(img);
+			});
+		});
+	}
+
+	// Create our base zoomer from the initial list
+	addZoomer(createZoomer(initlist));
+	initlist.hide();
+
+	// Click a return zoomer to go back to the previous view 		
+	target.find('.zoomer-return').click(function (ev) {
+		ev.preventDefault();
+		ev.stopPropagation();
+		var zoomers = target.find('.zoomer-container');
+		if (zoomers.length>1) {
+			$(zoomers[zoomers.length-1]).fadeOut(function () {
+				$(this).remove();
+				$(zoomers[zoomers.length-2]).fadeIn();
+			});
+		}
+	});
+
+});
+</script>
+
+<style type="text/css">
+img {
+	width: 300px;
+	height: 225px;
+	}
+
+div.zoomer-img {
+	float: left;
+	margin-right: 10px;
+	}
+
+div.zoomer-overlay {
+	text-align: left;
+	color:black;
+	font-family:sans;
+	font-weight:bold;
+	font-size:xx-large;
+	}
+
+div.zoomer-return {
+	font-family:sans;
+	font-weight:bold;
+	font-size:xx-large;
+	}
+
+ul.zoomer-list {
+	clear: both;
+	}
+</style>
+</head>
+
+<body>
+
+<div id="zoomerTarget">
+	<div class="zoomer-return">&crarr;</div>
+</div>
+
+<ul class="zoomer-list">
+	<li><a href="A-block.png">Aa</a>
+		<ul>
+			<li><a href="a-block.png">Lowercase</a></li>
+			<li><a href="A-block.png">Uppercase</a></li>
+			<li><a href="a-morse.png">Code</a>
+				<ul>
+					<li><a href="a-braille.png">Braille</a></li>
+					<li><a href="a-semaphore.png">Semaphore</a></li>
+					<li><a href="a-morse.png">Morse Code</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+
+	<li><a href="B-block.png">Bb</a>
+		<ul>
+			<li><a href=b-block.png">Lowercase</a></li>
+			<li><a href="B-block.png">Uppercase</a></li>
+			<li><a href="b-morse.png">Code</a>
+				<ul>
+					<li><a href="b-braille.png">Braille</a></li>
+					<li><a href="b-semaphore.png">Semaphore</a></li>
+					<li><a href="b-morse.png">Morse Code</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+
+	<li><a href="C-block.png">Cc</a>
+		<ul>
+			<li><a href=c-block.png">Lowercase</a></li>
+			<li><a href="C-block.png">Uppercase</a></li>
+			<li><a href="c-morse.png">Code</a>
+				<ul>
+					<li><a href="c-braille.png">Braille</a></li>
+					<li><a href="c-semaphore.png">Semaphore</a></li>
+					<li><a href="c-morse.png">Morse Code</a></li>
+				</ul>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+</body>
+</html>
