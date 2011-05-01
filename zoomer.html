@@ -8,11 +8,11 @@
 <script>
 $(document).ready(function(){
 
-	var initlist = $('ul.zoomer-list'),
-	    target = $('#zoomerTarget');
+	var target = $('#zoomerTarget'),
+	    initlist = target.find('ul.zoomer-list');
 
 	function zoomerImg(src, caption) {
-		return $('<div class="zoomer-img"><div>'+caption+'</div><img src="'+src+'"></div>').click(function (ev) {
+		return $('<div class="zoomer-img"><div class="zoomer-caption">'+caption+'</div><img src="'+src+'"></div>').click(function (ev) {
 			ev.preventDefault();
 			ev.stopPropagation();
 			
@@ -92,7 +92,7 @@ $(document).ready(function(){
 	initlist.hide();
 
 	// Click a return zoomer to go back to the previous view 		
-	target.find('.zoomer-return').click(function (ev) {
+	target.prepend($('<div class="zoomer-return">&crarr;</div>').click(function (ev) {
 		ev.preventDefault();
 		ev.stopPropagation();
 		var zoomers = target.find('.zoomer-container');
@@ -102,7 +102,7 @@ $(document).ready(function(){
 				$(zoomers[zoomers.length-2]).fadeIn();
 			});
 		}
-	});
+	}));
 
 });
 </script>
@@ -116,10 +116,19 @@ img {
 div.zoomer-img {
 	float: left;
 	margin-right: 10px;
+	margin-top: 10px;
+	padding: 3px;
+	border: 2px solid #ccc;
+	}
+
+div.zoomer-caption {
+	background: #ccc;
+	font-family: sans;
+	padding: 2px;
 	}
 
 div.zoomer-overlay {
-	text-align: left;
+	text-align: right;
 	color:black;
 	font-family:sans;
 	font-weight:bold;
@@ -141,52 +150,52 @@ ul.zoomer-list {
 <body>
 
 <div id="zoomerTarget">
-	<div class="zoomer-return">&crarr;</div>
+	<ul class="zoomer-list">
+		<li><a href="A-block.png">Aa</a>
+			<ul>
+				<li><a href="a-block.png">Lowercase</a></li>
+				<li><a href="A-block.png">Uppercase</a></li>
+				<li><a href="a-morse.png">Code</a>
+					<ul>
+						<li><a href="a-braille.png">Braille</a></li>
+						<li><a href="a-semaphore.png">Semaphore</a></li>
+						<li><a href="a-morse.png">Morse Code</a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><a href="B-block.png">Bb</a>
+			<ul>
+				<li><a href=b-block.png">Lowercase</a></li>
+				<li><a href="B-block.png">Uppercase</a></li>
+				<li><a href="b-morse.png">Code</a>
+					<ul>
+						<li><a href="b-braille.png">Braille</a></li>
+						<li><a href="b-semaphore.png">Semaphore</a></li>
+						<li><a href="b-morse.png">Morse Code</a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+
+		<li><a href="C-block.png">Cc</a>
+			<ul>
+				<li><a href=c-block.png">Lowercase</a></li>
+				<li><a href="C-block.png">Uppercase</a></li>
+				<li><a href="c-morse.png">Code</a>
+					<ul>
+						<li><a href="c-braille.png">Braille</a></li>
+						<li><a href="c-semaphore.png">Semaphore</a></li>
+						<li><a href="c-morse.png">Morse Code</a></li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+	</ul>
 </div>
 
-<ul class="zoomer-list">
-	<li><a href="A-block.png">Aa</a>
-		<ul>
-			<li><a href="a-block.png">Lowercase</a></li>
-			<li><a href="A-block.png">Uppercase</a></li>
-			<li><a href="a-morse.png">Code</a>
-				<ul>
-					<li><a href="a-braille.png">Braille</a></li>
-					<li><a href="a-semaphore.png">Semaphore</a></li>
-					<li><a href="a-morse.png">Morse Code</a></li>
-				</ul>
-			</li>
-		</ul>
-	</li>
-
-	<li><a href="B-block.png">Bb</a>
-		<ul>
-			<li><a href=b-block.png">Lowercase</a></li>
-			<li><a href="B-block.png">Uppercase</a></li>
-			<li><a href="b-morse.png">Code</a>
-				<ul>
-					<li><a href="b-braille.png">Braille</a></li>
-					<li><a href="b-semaphore.png">Semaphore</a></li>
-					<li><a href="b-morse.png">Morse Code</a></li>
-				</ul>
-			</li>
-		</ul>
-	</li>
-
-	<li><a href="C-block.png">Cc</a>
-		<ul>
-			<li><a href=c-block.png">Lowercase</a></li>
-			<li><a href="C-block.png">Uppercase</a></li>
-			<li><a href="c-morse.png">Code</a>
-				<ul>
-					<li><a href="c-braille.png">Braille</a></li>
-					<li><a href="c-semaphore.png">Semaphore</a></li>
-					<li><a href="c-morse.png">Morse Code</a></li>
-				</ul>
-			</li>
-		</ul>
-	</li>
-</ul>
+	
 
 </body>
 </html>
